@@ -4,7 +4,7 @@ const cors = require('cors');
 const https = require('https');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.static('public'));
@@ -24,14 +24,14 @@ app.get('/api/fetch-pdf', async (req, res) => {
             args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
         const page = await browser.newPage();
-        
+
         // Go to the page
         await page.goto(url, { waitUntil: 'networkidle0', timeout: 60000 });
 
         // Logic to extract the PDF URL
         // From analysis: The download button usually calls a function or has a direct link.
         // We will try to find the direct link or the script that generates it.
-        
+
         const pdfUrl = await page.evaluate(() => {
             // Priority 1: Check for direct 'sitepdfs' link in scripts (as seen in analysis)
             const scripts = Array.from(document.querySelectorAll('script')).map(s => s.innerText);
@@ -39,10 +39,10 @@ app.get('/api/fetch-pdf', async (req, res) => {
             if (scriptMatch) return scriptMatch[0];
 
             // Priority 2: Check standard download buttons
-            const downloadBtn = document.querySelector('a.bg-red.me-3') || 
-                                document.querySelector('a[href*="/sitepdfs/"]') ||
-                                document.querySelector('a.downloadPdfBtn');
-            
+            const downloadBtn = document.querySelector('a.bg-red.me-3') ||
+                document.querySelector('a[href*="/sitepdfs/"]') ||
+                document.querySelector('a.downloadPdfBtn');
+
             if (downloadBtn && downloadBtn.href && downloadBtn.href.includes('/sitepdfs/')) {
                 return downloadBtn.href;
             }
@@ -52,7 +52,7 @@ app.get('/api/fetch-pdf', async (req, res) => {
             const html = document.documentElement.innerHTML;
             const functionMatch = html.match(/downloadFile\(['"](https:\/\/www\.selfstudys\.com\/sitepdfs\/[^'"]+)['"]\)/);
             if (functionMatch) return functionMatch[1];
-            
+
             return null;
         });
 
