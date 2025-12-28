@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SelfStudys PDF Downloader</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Paper<span class="highlight">Grab</span></h1>
+            <p>Download your JEE papers instantly.</p>
+        </header>
+
+        <main class="card">
+            <div class="input-group">
+                <input type="url" id="urlInput" placeholder="Paste SelfStudys URL here..." required>
+                <div class="input-line"></div>
+            </div>
+            
+            <button id="downloadBtn" class="primary-btn">
+                <span class="btn-text">Download PDF</span>
+                <span class="btn-loader"></span>
+            </button>
+
+            <div id="status" class="status-msg"></div>
+        </main>
+
+        <footer>
+            <p>Designed for efficiency.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
